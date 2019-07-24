@@ -1,0 +1,31 @@
+checkForFileType(fileurl, mimeType, filename) {
+    var blob;
+    blob = this.converBase64toBlob(fileurl, mimeType);
+    var blobURL = URL.createObjectURL(blob);
+    var file_path = 'host/path/file.ext';
+    var link = document.createElement('a');
+    link.href = blobURL;
+    link.download = filename;
+    link.click();
+  }
+
+  converBase64toBlob(content, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 512;
+    var byteCharacters = window.atob(content); //method which converts base64 to binary
+    var byteArrays = [
+    ];
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      var byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    var blob = new Blob(byteArrays, {
+      type: contentType
+    }); //statement which creates the blob
+    return blob;
+  }
